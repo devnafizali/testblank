@@ -21,7 +21,7 @@ import requests
 import datefinder
 import json
 from tqdm import tqdm
-from install_chrome import dechrome
+# from install_chrome import dechrome
 
 # dechrome()
 # Set up argument parser
