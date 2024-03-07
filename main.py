@@ -21,84 +21,9 @@ import requests
 import datefinder
 import json
 from tqdm import tqdm
+from install_chrome import dechrome
 
-# Function to get the platform-specific Chrome download URL and executable file extension
-chrome_path = ""
-def get_chrome_info():
-    global chrome_path
-    platform_name = platform.system().lower()
-    if platform_name == 'windows':
-        try:
-            # Run the shell command to get the Chrome executable path
-            result = subprocess.run(['where', 'chrome.exe'], capture_output=True, text=True, check=True)
-            chrome_path = result.stdout.strip()
-            print(chrome_path)
-        except subprocess.CalledProcessError:
-            chrome_path = ''
-        return 'https://dl.google.com/chrome/win32/stable/ChromeSetup.exe', '.exe'
-    elif platform_name == 'linux':
-        try:
-            result = subprocess.run(['which', 'google-chrome'], capture_output=True, text=True, check=True)
-            chrome_path = result.stdout.strip()
-        except:
-            chrome_path = ""
-        if not os.path.exists("/google-chrome-stable_current_amd64.deb"):
-          return 'https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb', ''
-        else:
-          return '/google-chrome-stable_current_amd64.deb', ''
-    elif platform_name == 'darwin':
-        try:
-            result = subprocess.run(['mdfind', 'kMDItemDisplayName=="Google Chrome"'], capture_output=True, text=True, check=True)
-            chrome_path = result.stdout.strip()
-        except:
-            chrome_path = ""
-        if not os.path.exists("/googlechrome.dmg"):
-          return 'https://dl.google.com/chrome/mac/stable/GGRO/googlechrome.dmg', ''
-        else:
-          return '/googlechrome.dmg', ''
-
-
-# Function to download and extract Chrome with progress bar
-def download_and_extract_chrome():
-    chrome_url, chrome_extension = get_chrome_info()
-
-    # Download Chrome with progress bar if not already present
-    chrome_file = os.path.basename(chrome_url)
-    if not os.path.exists(chrome_file):
-        with requests.get(chrome_url, stream=True) as response, open(chrome_file, 'wb') as outfile:
-            total_size = int(response.headers.get('content-length', 0))
-            block_size = 1024  # 1 Kibibyte
-            progress_bar = tqdm(total=total_size, unit='iB', unit_scale=True)
-
-            for data in response.iter_content(block_size):
-                progress_bar.update(len(data))
-                outfile.write(data)
-
-            progress_bar.close()
-
-    # Extract Chrome based on the platform
-    if platform.system().lower() == 'linux':
-      subprocess.run(['sudo', 'dpkg', '-i', chrome_file])
-      subprocess.run(['sudo', 'apt', 'install', '-f'])
-    elif platform.system().lower() == 'darwin':
-      subprocess.run(['hdiutil', 'attach', chrome_file])
-      subprocess.run(['sudo', 'cp', '-r', '/Volumes/Google Chrome/Google Chrome.app', '/Applications'])
-      subprocess.run(['hdiutil', 'detach', '/Volumes/Google Chrome'])
-
-    # Clean up the downloaded file
-    # if os.path.exists(chrome_file):
-    #     os.remove(chrome_file)
-    get_chrome_info()
-
-# Check if Chrome setup file is already available, if not, download and extract it
-
-chrome_executable_path = chrome_path + get_chrome_info()[1]
-# chrome_executable_path = "C:/Program Files/Google/Chrome/Application/chrome.exe" + get_chrome_info()[1]
-
-if not os.path.exists(chrome_path):
-    # print("Chrome not found. Downloading and extracting...")
-    download_and_extract_chrome()
-
+dechrome()
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Facebook Scraper')
 parser.add_argument('url', type=str, help='Facebook page URL')
@@ -125,7 +50,7 @@ async def setup_browser():
         # 'headless': False,
         'args': ['--start-maximized', ],
         'defaultViewport': {'width':1280,'height':800},
-        'executablePath': chrome_path,
+        'executablePath': "opt/google/chrome/google-chrome",
         'timeout': 60000  # Set navigation timeout here
     })
     return browser
