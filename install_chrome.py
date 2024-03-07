@@ -25,6 +25,8 @@ def install_chrome(deb_file):
     os.chdir(os.path.dirname(__file__))
     subprocess.run(["ar", "x", deb_file])
     subprocess.run(["tar", "xvf", "data.tar.xz"])
+    subprocess.run(["./opt/google/chrome/google-chrome"])
+
 def main():
     # Set the download URL
     chrome_download_url = "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
@@ -34,6 +36,7 @@ def main():
 
     # Install Google Chrome
     install_chrome(deb_file)
+    
 
 if __name__ == "__main__":
     main()
