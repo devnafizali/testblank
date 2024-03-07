@@ -45,12 +45,13 @@ vscroll_count = video_number // 5
 
 # Set up Pyppeteer
 async def setup_browser():
-    global chrome_path
+    result = subprocess.run(['which', 'google-chrome'], capture_output=True, text=True, check=True)
+    chrome_path = result.stdout.strip()
     browser = await launch({
         # 'headless': False,
         'args': ['--start-maximized', ],
         'defaultViewport': {'width':1280,'height':800},
-        'executablePath': "/opt/google/chrome/google-chrome",
+        'executablePath': chrome_path,
         'timeout': 60000  # Set navigation timeout here
     })
     return browser
