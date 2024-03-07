@@ -23,7 +23,7 @@ import json
 from tqdm import tqdm
 from install_chrome import dechrome
 
-dechrome()
+# dechrome()
 # Set up argument parser
 parser = argparse.ArgumentParser(description='Facebook Scraper')
 parser.add_argument('url', type=str, help='Facebook page URL')
