@@ -49,10 +49,9 @@ async def setup_browser():
     chrome_path = result.stdout.strip()
     print(chrome_path)
     browser = await launch({
-        'headless': False,
+        # 'headless': False,
         'args': ['--start-maximized', '--no-sandbox'],
-        'defaultViewport': {'width':1280,'height':800},
-        'executablePath': "opt/google/chrome/google-chrome",
+        # 'executablePath': chrome_path,
         'timeout': 60000  # Set navigation timeout here
     })
     return browser
@@ -869,7 +868,7 @@ async def main():
     print("Saving The json...", end='', flush=True)
 
     if page_name and not os.path.exists(page_name):
-        os.mkdir(page_name)
+        os.mkdir(re.sub(r'[^\x00-\x7F]+', '', page_name))
     print("Done")
     print("Downloading the images...", end='', flush=True)
     PG["Page"]["photos"] = []
@@ -877,7 +876,8 @@ async def main():
     for i, element in enumerate(photo_urls):
         name = f"image_{i}_{int(time.time())}.jpg"
         name_of_photo = f"{page_name}/{name}"
-        await download_image(page, element, name_of_photo)
+        cleaned_file_name = re.sub(r'[^\x00-\x7F]+', '', name_of_photo)
+        await download_image(page, element, cleaned_file_name)
         PG["Page"]["photos"].append(name) 
     print("Done")
     end_time = time.time()
@@ -886,8 +886,10 @@ async def main():
     seconds = int(elapsed_time_seconds % 60)
     PG["Page"]["scrape_epoch_timestamp"] = int(time.time())
     # Save the information in a JSON file
+    
     file_name = f"{page_name}/{page_name}.json"
-    with open(file_name, 'w', encoding='utf-8') as json_file:
+    cleaned_file_name = re.sub(r'[^\x00-\x7F]+', '', file_name)
+    with open(cleaned_file_name, 'w', encoding='utf-8') as json_file:
         json.dump(PG, json_file, indent=2, ensure_ascii=False)
     await page.close()
     # Close the browser
