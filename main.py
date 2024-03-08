@@ -153,13 +153,16 @@ async def main():
     await page.goto(fbPageUrl + "/about_profile_transparency")
 
     # Remove the first Facebook popup
-    await page.waitForSelector(".x92rtbv.x10l6tqk.x1tk7jg1.x1vjfegm")
-    await page.click(".x92rtbv.x10l6tqk.x1tk7jg1.x1vjfegm")
-
-    # Wait for the element to load
-    await page.waitForSelector(
+    try:
+      await page.waitForSelector(".x92rtbv.x10l6tqk.x1tk7jg1.x1vjfegm")
+      await page.click(".x92rtbv.x10l6tqk.x1tk7jg1.x1vjfegm")
+       # Wait for the element to load
+      await page.waitForSelector(
         ".x9f619.x1n2onr6.x1ja2u2z.x78zum5.xdt5ytf.x193iq5w.xeuugli.x1r8uery.x1iyjqo2.xs83m0k.xamitd3.xsyo7zv.x16hj40l.x10b6aqq.x1yrsyyn"
     )
+    except:
+      print("..")
+   
     
     # Get the page ID
     print("Getting Page ID & creation date...", end='', flush=True)
@@ -864,11 +867,11 @@ async def main():
     
     print("Done")
     # Check if directory exists, if not create it
-    page_name = PG.get('Page', {}).get('name', '').replace(":", "")
+    page_name = re.sub(r'[^\x00-\x7F]+', '', PG.get('Page', {}).get('name', '').replace(":", ""))
     print("Saving The json...", end='', flush=True)
-
+    
     if page_name and not os.path.exists(page_name):
-        os.mkdir(re.sub(r'[^\x00-\x7F]+', '', page_name))
+        os.mkdir(page_name)
     print("Done")
     print("Downloading the images...", end='', flush=True)
     PG["Page"]["photos"] = []
@@ -876,8 +879,7 @@ async def main():
     for i, element in enumerate(photo_urls):
         name = f"image_{i}_{int(time.time())}.jpg"
         name_of_photo = f"{page_name}/{name}"
-        cleaned_file_name = re.sub(r'[^\x00-\x7F]+', '', name_of_photo)
-        await download_image(page, element, cleaned_file_name)
+        await download_image(page, element, name_of_photo)
         PG["Page"]["photos"].append(name) 
     print("Done")
     end_time = time.time()
