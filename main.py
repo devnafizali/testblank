@@ -49,7 +49,7 @@ async def setup_browser():
     # chrome_path = result.stdout.strip()
     # print(chrome_path)
     browser = await launch({
-        # 'headless': False,
+        'headless': True,
         'args': ['--start-maximized', '--no-sandbox'],
         # 'executablePath': chrome_path,
         'timeout': 60000  # Set navigation timeout here
