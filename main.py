@@ -49,7 +49,7 @@ async def setup_browser():
     chrome_path = result.stdout.strip()
     print(chrome_path)
     browser = await launch({
-        # 'headless': False,
+        'headless': False,
         'args': ['--start-maximized', '--no-sandbox'],
         'defaultViewport': {'width':1280,'height':800},
         'executablePath': "opt/google/chrome/google-chrome",
