@@ -1,42 +1,20 @@
-import os
 import requests
-import subprocess
-from tqdm import tqdm
+import zipfile
+import io
+import os
 
-def download_chrome(download_url):
-    response = requests.get(download_url, stream=True)
-    file_path = os.path.join(os.path.dirname(__file__), "google-chrome.deb")
-    file_size = int(response.headers.get('content-length', 0))
-    
-    with open(file_path, "wb") as file, tqdm(
-        desc="Downloading Google Chrome",
-        total=file_size,
-        unit="B",
-        unit_scale=True,
-        unit_divisor=1024,
-    ) as bar:
-        for data in response.iter_content(chunk_size=1024):
-            bar.update(len(data))
-            file.write(data)
+# URL of the ZIP file
+zip_url = "https://github.com/adieuadieu/serverless-chrome/releases/download/v1.0.0-41/stable-headless-chromium-amazonlinux-2017-03.zip"
 
-    return file_path
+# Download the ZIP file
+response = requests.get(zip_url)
+if response.status_code == 200:
+    # Create a BytesIO object from the content
+    zip_content = io.BytesIO(response.content)
 
-def install_chrome(deb_file):
-    os.chdir(os.path.dirname(__file__))
-    subprocess.run(["ar", "x", deb_file])
-    subprocess.run(["tar", "xvf", "data.tar.xz"])
-    subprocess.run(["./opt/google/chrome/google-chrome"])
-
-def main():
-    # Set the download URL
-    chrome_download_url = "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-
-    # Download Google Chrome
-    deb_file = download_chrome(chrome_download_url)
-
-    # Install Google Chrome
-    install_chrome(deb_file)
-    
-
-if __name__ == "__main__":
-    main()
+    # Extract the contents of the ZIP file to the current directory
+    with zipfile.ZipFile(zip_content, 'r') as zip_ref:
+        zip_ref.extractall(os.getcwd())
+    print("Installation successful!")
+else:
+    print(f"Failed to download ZIP file. Status code: {response.status_code}")
