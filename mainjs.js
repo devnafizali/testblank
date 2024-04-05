@@ -9,16 +9,17 @@ import fetch from "node-fetch";
   // Launch browser
   const iPhone = KnownDevices["iPhone 13"];
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     args: ["--start-maximized", "--no-sandbox"],
     defaultViewport: null,
-    executablePath: "/usr/bin/google-chrome",
-    // executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    // executablePath: "/usr/bin/google-chrome",
+    executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
     devtools: true,
     ignoreHTTPSErrors: true,
   }); // Set to true for headless mode
 
   const page = await browser.newPage();
+    // await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36');
   await page.emulate(iPhone);
 
   // await page.setViewport({ width: 1000, height: 695, isMobile: true });
@@ -68,7 +69,7 @@ import fetch from "node-fetch";
   // Loop to iterate over a set number of times (in this case, only once)
   for (let i = 0; i < 1; i++) {
     // Navigate to a specific Facebook page
-    await page.goto("https://mobile.facebook.com/entrptaher");
+    await page.goto("http://mobile.facebook.com/entrptaher");
   
     // Remove a specific container element if it exists
     const containerToRemove = await page.waitForSelector('[data-comp-id="22222"][data-type="container"]')
@@ -84,7 +85,7 @@ import fetch from "node-fetch";
     await page.evaluate(async () => {
       window.scrollTo(0, document.body.scrollHeight - 500);
     });
-  
+    await page.screenshot({ path: 'example_element.png' });
     // Wait for a specific element to appear
     await page.waitForXPath('//*[text()="󰤥"]');
     const targetElements = await page.$x('//*[text()="󰤥"]');
@@ -218,6 +219,8 @@ import fetch from "node-fetch";
   
       // Push the post object to the posts array
       posts.push(await thepost.jsonValue());
+      await page.screenshot({ path: 'example_element.png' });
+
     } catch (error) {
       console.error("Error:", error.message);
     }
