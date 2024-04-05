@@ -1,4 +1,3 @@
-// const fetch = require("node-fetch");
 import { KnownDevices } from "puppeteer";
 import puppeteer from "puppeteer";
 import fs from "fs";
@@ -60,6 +59,7 @@ import fetch from "node-fetch";
     await page.evaluate(async () => {
       window.scrollTo(0, document.body.scrollHeight);
     });
+    await page.waitForNetworkIdle()
     await page.waitForXPath('//*[text()="󰤥"]');
     const targetElements = await page.$x('//*[text()="󰤥"]');
       if(targetElements[i]){
