@@ -318,7 +318,7 @@ import fetch from "node-fetch";
   }
   const postUrls = []
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 10; i++) {
     await page.evaluate(async () => {
       window.scrollTo(0, document.body.scrollHeight - 500);
     });
