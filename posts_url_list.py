@@ -59,7 +59,7 @@ async def fetch_post_urls(pageId):
             except Exception as e:
                 pass
             await page.evaluate('''() => {
-                window.scrollTo(0, document.body.scrollHeight-100);
+                window.scrollTo(0, document.body.scrollHeight);
             }''')
             await page.waitForSelector('[style="width:29px;"]')
             target_elements = await page.querySelectorAll('[style="width:29px;"]')
