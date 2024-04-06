@@ -50,8 +50,8 @@ async def setup_browser():
         'headless': True,
         'args': ['--start-maximized', '--no-sandbox'],
         'defaultViewport': {'width':1280,'height':800},
-        'executablePath':"C:/Program Files/Google/Chrome/Application/chrome.exe",
-        # 'executablePath': "/usr/bin/google-chrome",
+        # 'executablePath':"C:/Program Files/Google/Chrome/Application/chrome.exe",
+        'executablePath': "/usr/bin/google-chrome",
         'timeout': 60000  # Set navigation timeout here
     })
     return browser
