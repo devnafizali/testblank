@@ -4,6 +4,8 @@ import argparse
 import importlib
 import subprocess
 import time
+from posts_url_list import fetch_post_urls
+
 library_names = ['pyppeteer', 'pyppeteer_stealth', 'requests', 'datefinder', 'datetime', 'json', 'tqdm']
 for library_name in library_names:
     try:
@@ -32,13 +34,13 @@ parser.add_argument('--wtp', type=int, default=20, help='Waiting time for photo'
 args = parser.parse_args()
 
 # Assign values from command-line arguments
-fbPageUrl = args.url
+fbPageId = args.url
+fbPageUrl = "https://fb.com/"+fbPageId
 post_count = args.ptc
 photo_number = args.phc
 video_number = args.vnc
 waiting_time_for_photo = args.wtp
 vscroll_count = video_number // 5
-
 # Set up Pyppeteer
 async def setup_browser():
     # result = subprocess.run(['which', 'google-chrome'], capture_output=True, text=True, check=True)
@@ -48,13 +50,16 @@ async def setup_browser():
         'headless': True,
         'args': ['--start-maximized', '--no-sandbox'],
         'defaultViewport': {'width':1280,'height':800},
-        'executablePath': '/usr/bin/google-chrome',
+        'executablePath':"C:/Program Files/Google/Chrome/Application/chrome.exe",
+        # 'executablePath': "/usr/bin/google-chrome",
         'timeout': 60000  # Set navigation timeout here
     })
     return browser
   
 async def main():
     start_time = time.time()
+    post_urls = await fetch_post_urls(fbPageId)
+    print(post_urls)
     # Set up browser
     browser = await setup_browser()
 
@@ -81,19 +86,15 @@ async def main():
     except:
       print("..")
    
-    
+    posts = await getPagePosts(page,fbPageId, post_urls)
     inf = await getPageInfos(page, fbPageUrl)
     PG['Page'].update(inf)
     # Get bottom of the website
     print("Getting Posts...", end='', flush=True)
-    posts = await getPagePosts(page, post_count)
     print("Done")  
     PG['Page'].update(posts)
-    
     pv = await getPagePV(page, photo_number, video_number, PG["Page"]["name"].replace(":", ""), waiting_time_for_photo, fbPageUrl)
-    PG['Page'].update(pv)
-  
-    
+    PG['Page'].update(pv["Page"])
     
     # Save the information in a JSON file
     page_name = re.sub(r'[^\x00-\x7F]+', '',  PG["Page"]["name"].replace(":", ""))
