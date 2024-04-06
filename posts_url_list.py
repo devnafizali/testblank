@@ -49,6 +49,9 @@ async def fetch_post_urls(pageId):
             await page.evaluate('''() => {
                 window.scrollTo(0, document.body.scrollHeight);
             }''')
+            await page.waitForNavigation({
+            'waitUntil': 'networkidle0',
+            })
             await page.waitForSelector('[style="width:29px;"]')
             target_elements = await page.querySelectorAll('[style="width:29px;"]')
             
