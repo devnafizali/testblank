@@ -32,9 +32,13 @@ parser.add_argument('--wtp', type=int, default=20, help='Waiting time for photo'
 
 # Parse command-line arguments
 args = parser.parse_args()
-
+def get_last_part_of_url(url):
+    parsed_url = urlparse(url)
+    path_parts = parsed_url.path.split('/')
+    last_part = path_parts[-1]
+    return last_part
 # Assign values from command-line arguments
-fbPageId = args.url
+fbPageId = get_last_part_of_url(args.url)
 fbPageUrl = "https://fb.com/"+fbPageId
 post_count = args.ptc
 photo_number = args.phc
