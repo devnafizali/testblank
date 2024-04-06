@@ -6,19 +6,20 @@ import os
 
 async def fetch_post_urls(pageId):
     browser = await launch(
-    headless=True,
+    headless=False,
     args=["--start-maximized", "--no-sandbox"],
     defaultViewport=None,
-    executablePath = "/usr/bin/google-chrome",
-    # executablePath ="C:/Program Files/Google/Chrome/Application/chrome.exe",
+    # executablePath = "/usr/bin/google-chrome",
+    executablePath ="C:/Program Files/Google/Chrome/Application/chrome.exe",
     devtools=True,
     ignoreHTTPSErrors=True,)
+    
     try:
         page = await browser.newPage()
         await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1')
         await page.setViewport({'width': 390, 'height': 844, 'deviceScaleFactor': 3, 'isMobile': True, 'hasTouch': True})
-
-        await page.goto("https://mobile.facebook.com/"+pageId)
+        
+        await page.goto("https://m.facebook.com/"+pageId)
         await page.waitForSelector('[data-comp-id="22222"][data-type="container"]')
         container_to_remove = await page.querySelector('[data-comp-id="22222"][data-type="container"]')
 
@@ -32,7 +33,6 @@ async def fetch_post_urls(pageId):
                     # Split the part again based on '=' to get the value
                     value = part.split('=')[1]
                     return value
-            
             # Return None if 'story_fbid' is not found in the URL
             return None
 
@@ -40,18 +40,27 @@ async def fetch_post_urls(pageId):
         if container_to_remove:
             # Remove the container element from the DOM
             await page.evaluate('(element) => element.remove()', container_to_remove)
-            print("Widget removed successfully.")
+            print("")
         else:
-            print("Widget not found.")
+            print("")
             
         post_urls = []
-        for i in range(5):
+        for i in range(20):
+            try:
+                containerToRemove = await page.waitForSelector('[data-comp-id="22222"][data-type="container"]', {'timeout': 1000})
+
+                # Check if the container element exists
+                if containerToRemove:
+                    # Remove the container element from the DOM
+                    await page.evaluate('(element) => element.remove()', containerToRemove)
+                    print("")
+                else:
+                    print("")
+            except Exception as e:
+                print("")
             await page.evaluate('''() => {
-                window.scrollTo(0, document.body.scrollHeight);
+                window.scrollTo(0, document.body.scrollHeight-100);
             }''')
-            await page.waitForNavigation({
-            'waitUntil': 'networkidle0',
-            })
             await page.waitForSelector('[style="width:29px;"]')
             target_elements = await page.querySelectorAll('[style="width:29px;"]')
             
@@ -66,14 +75,14 @@ async def fetch_post_urls(pageId):
                 url = get_story_fbid(await page.evaluate("window.location.href"))
                 if url is not None:
                     post_urls.append(url)
-
                 await page.goBack()
                 await page.waitForNavigation()
         print(post_urls)
         await browser.close()
         return post_urls
     except Exception as e:
-        print(f"An error occurred: {e}")
+        if browser:
+            await browser.close()
     finally:
         if browser:
             await browser.close()

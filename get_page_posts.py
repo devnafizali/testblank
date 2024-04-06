@@ -7,7 +7,6 @@ async def getPagePosts(page, pagId, post_urls):
         
         try:
           await page.waitForSelector(".__fb-light-mode.x1n2onr6.xzkaem6")
-
           await page.evaluate('''() => {
               const elementToRemove = document.querySelector(".__fb-light-mode.x1n2onr6.xzkaem6");
               if (elementToRemove) {
@@ -16,7 +15,12 @@ async def getPagePosts(page, pagId, post_urls):
           }''')
         except:
           print("")
-
+        isVideo = await page.evaluate('''()=>{
+          return window.location.href.includes("videos")
+        }''')
+        if isVideo: 
+          continue
+        
         try:
             await page.waitForSelector(".x78zum5.x1iyjqo2.x21xpn4.x1n2onr6", timeout=1000)
             await page.evaluate('''() => {
@@ -27,8 +31,8 @@ async def getPagePosts(page, pagId, post_urls):
                 });
             }''')
         except Exception as error:
-            print(error)
-
+            print("")
+            
         try:
           post_details = await page.evaluate('''() => {
           function convertSuffixToNumber(valueStr) {
@@ -231,10 +235,10 @@ async def getPagePosts(page, pagId, post_urls):
           }
           const allComments = [];
           try {
-        const newCommentsWidget = document.querySelectorAll(".x169t7cy.x19f6ikt");
-      console.log(newCommentsWidget);
-      if (newCommentsWidget) {
-        newCommentsWidget.forEach((element) => {
+          const newCommentsWidget = document.querySelectorAll(".x169t7cy.x19f6ikt");
+          console.log(newCommentsWidget);
+          if (newCommentsWidget) {
+          newCommentsWidget.forEach((element) => {
           const repList = [];
           var singleComment = {};
           const list = element.querySelectorAll("div .x46jau6");
@@ -305,6 +309,6 @@ async def getPagePosts(page, pagId, post_urls):
         }''')
           all_the_posts.append(post_details)
         except:
-          print("")
+          print("Inserting post error")
     PG['Page']['posts'] = all_the_posts
     return PG['Page']
