@@ -5,6 +5,8 @@ import importlib
 import subprocess
 import time
 from posts_url_list import fetch_post_urls
+from urllib.parse import urlparse
+
 
 library_names = ['pyppeteer', 'pyppeteer_stealth', 'requests', 'datefinder', 'datetime', 'json', 'tqdm']
 for library_name in library_names:
