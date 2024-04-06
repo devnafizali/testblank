@@ -40,9 +40,9 @@ async def fetch_post_urls(pageId):
         if container_to_remove:
             # Remove the container element from the DOM
             await page.evaluate('(element) => element.remove()', container_to_remove)
-            print("")
+            pass
         else:
-            print("")
+            pass
             
         post_urls = []
         for i in range(20):
@@ -53,11 +53,11 @@ async def fetch_post_urls(pageId):
                 if containerToRemove:
                     # Remove the container element from the DOM
                     await page.evaluate('(element) => element.remove()', containerToRemove)
-                    print("")
+                    pass
                 else:
-                    print("")
+                    pass
             except Exception as e:
-                print("")
+                pass
             await page.evaluate('''() => {
                 window.scrollTo(0, document.body.scrollHeight-100);
             }''')
@@ -77,7 +77,6 @@ async def fetch_post_urls(pageId):
                     post_urls.append(url)
                 await page.goBack()
                 await page.waitForNavigation()
-        print(post_urls)
         await browser.close()
         return post_urls
     except Exception as e:

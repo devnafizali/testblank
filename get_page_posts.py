@@ -14,7 +14,7 @@ async def getPagePosts(page, pagId, post_urls):
               }
           }''')
         except:
-          print("")
+          pass
         isVideo = await page.evaluate('''()=>{
           return window.location.href.includes("videos")
         }''')
@@ -31,7 +31,7 @@ async def getPagePosts(page, pagId, post_urls):
                 });
             }''')
         except Exception as error:
-            print("")
+            pass
             
         try:
           post_details = await page.evaluate('''() => {
@@ -309,6 +309,6 @@ async def getPagePosts(page, pagId, post_urls):
         }''')
           all_the_posts.append(post_details)
         except:
-          print("Inserting post error")
+          pass
     PG['Page']['posts'] = all_the_posts
     return PG['Page']

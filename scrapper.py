@@ -58,8 +58,8 @@ async def setup_browser():
   
 async def main():
     start_time = time.time()
+    print("Getting page posts list ...")
     post_urls = await fetch_post_urls(fbPageId)
-    print(post_urls)
     # Set up browser
     browser = await setup_browser()
 
@@ -72,7 +72,7 @@ async def main():
     PG["Page"]["scrape_epoch_timestamp"] = int(time.time())
     # Facebook page URL
     # Navigate to the specified URL
-    print("Accessing ", fbPageUrl)
+    print("Getting page infos...", fbPageUrl)
     await page.goto(fbPageUrl + "/about_profile_transparency")
 
     # Remove the first Facebook popup
@@ -84,18 +84,15 @@ async def main():
         ".x9f619.x1n2onr6.x1ja2u2z.x78zum5.xdt5ytf.x193iq5w.xeuugli.x1r8uery.x1iyjqo2.xs83m0k.xamitd3.xsyo7zv.x16hj40l.x10b6aqq.x1yrsyyn"
     )
     except:
-      print("..")
-   
+      pass
+    print("Getting Page details", end='', flush=True)
     posts = await getPagePosts(page,fbPageId, post_urls)
     inf = await getPageInfos(page, fbPageUrl)
     PG['Page'].update(inf)
     # Get bottom of the website
-    print("Getting Posts...", end='', flush=True)
-    print("Done")  
     PG['Page'].update(posts)
     pv = await getPagePV(page, photo_number, video_number, PG["Page"]["name"].replace(":", ""), waiting_time_for_photo, fbPageUrl)
     PG['Page'].update(pv["Page"])
-    
     # Save the information in a JSON file
     page_name = re.sub(r'[^\x00-\x7F]+', '',  PG["Page"]["name"].replace(":", ""))
     file_name = f"{page_name}/{page_name}.json"
