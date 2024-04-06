@@ -6,11 +6,11 @@ import os
 
 async def fetch_post_urls(pageId):
     browser = await launch(
-    headless=False,
+    headless=True,
     args=["--start-maximized", "--no-sandbox"],
     defaultViewport=None,
-    # executablePath = "/usr/bin/google-chrome",
-    executablePath ="C:/Program Files/Google/Chrome/Application/chrome.exe",
+    executablePath = "/usr/bin/google-chrome",
+    # executablePath ="C:/Program Files/Google/Chrome/Application/chrome.exe",
     devtools=True,
     ignoreHTTPSErrors=True,)
     
