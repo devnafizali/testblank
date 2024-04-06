@@ -60,7 +60,7 @@ async def main():
     start_time = time.time()
     print("Getting page posts list ...")
     post_urls = await fetch_post_urls(fbPageId)
-    console.log(post_urls)
+    print(post_urls)
     # Set up browser
     browser = await setup_browser()
 
