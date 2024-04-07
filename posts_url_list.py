@@ -45,7 +45,7 @@ async def fetch_post_urls(pageId):
         if container_to_remove:
             # Remove the container element from the DOM
             await page.evaluate('(element) => element.remove()', container_to_remove)
-            pass
+            print("Widget removed")
         else:
             pass
             
@@ -79,6 +79,7 @@ async def fetch_post_urls(pageId):
                 await page.waitForSelector('[data-comp-id="22222"][data-type="container"]')
                 url = get_story_fbid(await page.evaluate("window.location.href"))
                 if url is not None:
+                    print(url)
                     post_urls.append(url)
                 await page.goBack()
                 await page.waitForNavigation()
