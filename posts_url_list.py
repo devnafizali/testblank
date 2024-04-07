@@ -6,20 +6,25 @@ import os
 
 async def fetch_post_urls(pageId):
     browser = await launch(
-    headless=True,
+    headless=False,
     args=["--start-maximized", "--no-sandbox"],
     defaultViewport=None,
-    executablePath = "/usr/bin/google-chrome",
-    # executablePath ="C:/Program Files/Google/Chrome/Application/chrome.exe",
-    devtools=True,
+    # executablePath = "/usr/bin/google-chrome",
+    executablePath ="C:/Program Files/Google/Chrome/Application/chrome.exe",
     ignoreHTTPSErrors=True,)
     
     try:
         page = await browser.newPage()
-        await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1')
-        await page.setViewport({'width': 390, 'height': 844, 'deviceScaleFactor': 3, 'isMobile': True, 'hasTouch': True})
+        # await page.setUserAgent('Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1')
+        # await page.setViewport({'width': 390, 'height': 844, 'deviceScaleFactor': 3, 'isMobile': True, 'hasTouch': True})
         
-        await page.goto("https://facebook.com/"+pageId)
+        await page.goto("https://mobile.facebook.com/"+pageId)
+        await page.waitForNavigation()
+        pageUrl = await page.evaluate("window.location.href")
+        if pageUrl == "https://mobile.facebook.com/cookie/consent":
+            buttons = page.querySelectorAll('[role="button"]')
+            await page.evaluate('(element) => element.click()', buttons[4])
+            await page.waitForNavigation()
         await page.waitForSelector('[data-comp-id="22222"][data-type="container"]')
         container_to_remove = await page.querySelector('[data-comp-id="22222"][data-type="container"]')
 
