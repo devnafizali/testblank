@@ -9,8 +9,8 @@ async def fetch_post_urls(pageId):
     headless=False,
     args=["--start-maximized", "--no-sandbox"],
     defaultViewport=None,
-    # executablePath = "/usr/bin/google-chrome",
-    executablePath ="C:/Program Files/Google/Chrome/Application/chrome.exe",
+    executablePath = "/usr/bin/google-chrome",
+    # executablePath ="C:/Program Files/Google/Chrome/Application/chrome.exe",
     ignoreHTTPSErrors=True,)
     
     try:
