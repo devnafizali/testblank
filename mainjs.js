@@ -82,4 +82,11 @@ import fetch from "node-fetch";
       }
   }
   console.log(postUrls)
+  fs.writeFile('postUrls.txt', postUrls.join('\n'), (err) => {
+    if (err) {
+        console.error('Error writing postUrls to file:', err);
+    } else {
+        console.log('postUrls written to postUrls.txt file.');
+    }
+});
 })();
