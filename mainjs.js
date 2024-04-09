@@ -21,7 +21,6 @@ console.log("Getting Page Posts list...")
   const browser = await puppeteer.launch({
       headless:true,
     args: ["--start-maximized", "--no-sandbox"],
-    defaultViewport: null,
     executablePath: "/usr/bin/google-chrome",
     // executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
     devtools: true,
@@ -29,7 +28,7 @@ console.log("Getting Page Posts list...")
   }); // Set to true for headless mode
 
   const page = await browser.newPage();
-  await page.emulate(iPhone);
+  // await page.emulate(iPhone);
   await page.goto("https://m.facebook.com/"+param);
   function getStoryFbid(url) {
     // Split the URL based on '?' and '&'
