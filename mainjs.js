@@ -8,7 +8,7 @@ import fetch from "node-fetch";
   // Launch browser
   const iPhone = KnownDevices["iPhone 13"];
   const browser = await puppeteer.launch({
-       headless: false,
+       headless: true,
     args: ["--start-maximized", "--no-sandbox"],
     defaultViewport: null,
     executablePath: "/usr/bin/google-chrome",
