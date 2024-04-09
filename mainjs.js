@@ -49,9 +49,8 @@ import fetch from "node-fetch";
   if (containerToRemove) {
     // Remove the container element from the DOM
     await page.evaluate((element) => element.remove(), containerToRemove);
-    console.log("Widget removed successfully.");
   } else {
-    console.log("Widget not found.");
+   
   }
   const postUrls = []
 
@@ -67,7 +66,6 @@ import fetch from "node-fetch";
           return element.parentElement.parentElement.parentElement.parentElement
             .nextElementSibling;
         });
-        console.log(nextSibling);
         await nextSibling.click();
         await page.waitForSelector(
           '[data-comp-id="22222"][data-type="container"]'
