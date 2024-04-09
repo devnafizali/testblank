@@ -3,7 +3,6 @@ import { KnownDevices } from "puppeteer";
 import puppeteer from "puppeteer";
 import fs from "fs";
 import fetch from "node-fetch";
-import path from "path";
 
 (async () => {
   // Launch browser
@@ -83,10 +82,9 @@ import path from "path";
       }
   }
   console.log(postUrls)
-  const postUrlsFilePath = path.join(__dirname, 'postUrls.txt');
-if (fs.existsSync(postUrlsFilePath)) {
-    fs.unlinkSync(postUrlsFilePath);
-    console.log('Previous postUrls.txt deleted.');
+  if (fs.existsSync('postUrls.txt')) {
+    fs.unlinkSync('postUrls.txt');
+    console.log('Previous postUrls.txt file deleted.');
 }
   fs.writeFile('postUrls.txt', postUrls.join('\n'), (err) => {
     if (err) {
