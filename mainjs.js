@@ -3,7 +3,17 @@ import { KnownDevices } from "puppeteer";
 import puppeteer from "puppeteer";
 import fs from "fs";
 import fetch from "node-fetch";
+const args = process.argv;
 
+// Print the entire process.argv array
+// Check if arguments were provided
+if (args.length < 3) {
+    console.log('Usage: node getParam.js <param>');
+    process.exit(1); // Exit the script with an error code
+}
+
+// Get the parameter passed as an argument
+const param = args[2];
 (async () => {
   // Launch browser
   const iPhone = KnownDevices["iPhone 13"];
@@ -19,7 +29,7 @@ import fetch from "node-fetch";
 
   const page = await browser.newPage();
   await page.emulate(iPhone);
-  await page.goto("https://mobile.facebook.com/Boeing");
+  await page.goto("https://mobile.facebook.com/"+param);
   function getStoryFbid(url) {
     // Split the URL based on '?' and '&'
     const parts = url.split(/[?&]/);
