@@ -64,8 +64,10 @@ async def setup_browser():
 async def main():
     start_time = time.time()
     print("Getting page posts list ...")
-    post_urls = await fetch_post_urls(fbPageId)
-    print(post_urls)
+    # post_urls = await fetch_post_urls(fbPageId)
+    # print(post_urls)
+    with open("postUrls.txt", 'r') as file:
+    post_urls = file.read().splitlines()
     # Set up browser
     browser = await setup_browser()
 
