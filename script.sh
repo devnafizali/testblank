@@ -10,7 +10,7 @@ fi
 url="$1"
 
 # Run the Node.js script to fetch postUrls
-node your_node_script.js
+node mainjs.js
 
 # Read the postUrls from the file and pass them to the Python script along with the URL
 python3 scrapper.py "$url"
