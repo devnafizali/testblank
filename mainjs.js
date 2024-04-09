@@ -3,7 +3,7 @@ import { KnownDevices } from "puppeteer";
 import puppeteer from "puppeteer";
 import fs from "fs";
 import fetch from "node-fetch";
-const path from "path";
+import path from "path";
 
 (async () => {
   // Launch browser
