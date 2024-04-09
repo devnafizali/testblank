@@ -93,4 +93,5 @@ import fetch from "node-fetch";
         console.log('postUrls written to postUrls.txt file.');
     }
 });
+  browser.close()
 })();
