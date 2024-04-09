@@ -66,8 +66,9 @@ async def main():
     print("Getting page posts list ...")
     # post_urls = await fetch_post_urls(fbPageId)
     # print(post_urls)
+    post_urls = []
     with open("postUrls.txt", 'r') as file:
-    post_urls = file.read().splitlines()
+        post_urls = file.read().splitlines()
     # Set up browser
     browser = await setup_browser()
 
