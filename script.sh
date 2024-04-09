@@ -13,7 +13,7 @@ url="$1"
 name=$(echo "$url" | awk -F'/' '{print $NF}')
 
 # Run the Node.js script with the extracted name as an argument
-node mainjs.js "https://mobile.facebook.com/$name"
+node mainjs.js "$name"
 
 # Read the postUrls from the file and pass them to the Python script along with the URL
 python3 scrapper.py "$url"
