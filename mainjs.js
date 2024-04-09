@@ -19,7 +19,7 @@ const param = args[2];
 console.log("Getting Page Posts list...")
   const iPhone = KnownDevices["iPhone 13"];
   const browser = await puppeteer.launch({
-      headless:true,
+      headless:"new",
     args: ["--start-maximized", "--no-sandbox"],
     executablePath: "/usr/bin/google-chrome",
     // executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
