@@ -16,9 +16,9 @@ if (args.length < 3) {
 const param = args[2];
 (async () => {
   // Launch browser
+console.log("Getting Page Posts list...")
   const iPhone = KnownDevices["iPhone 13"];
   const browser = await puppeteer.launch({
-       headless: true,
     args: ["--start-maximized", "--no-sandbox"],
     defaultViewport: null,
     executablePath: "/usr/bin/google-chrome",
