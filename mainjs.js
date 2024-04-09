@@ -9,7 +9,7 @@ import fetch from "node-fetch";
   const browser = await puppeteer.launch({
        headless: true,
     args: ["--start-maximized", "--no-sandbox"],
-    defaultViewport: null,
+    // defaultViewport: null,
     executablePath: "/usr/bin/google-chrome",
     // executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
     devtools: true,
