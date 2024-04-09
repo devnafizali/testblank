@@ -18,7 +18,7 @@ import fetch from "node-fetch";
 
   const page = await browser.newPage();
   await page.emulate(iPhone);
-  await page.goto("https://mobile.facebook.com/bayyinahinst");
+  await page.goto("https://mobile.facebook.com/Boeing");
   function getStoryFbid(url) {
     // Split the URL based on '?' and '&'
     const parts = url.split(/[?&]/);
