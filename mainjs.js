@@ -29,7 +29,7 @@ const param = args[2];
 
   const page = await browser.newPage();
   // await page.emulate(iPhone);
-  await page.goto("https://m.facebook.com/"+param);
+  await page.goto("https://mobile.facebook.com/"+param);
   function getStoryFbid(url) {
     // Split the URL based on '?' and '&'
     const parts = url.split(/[?&]/);
