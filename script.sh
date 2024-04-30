@@ -1,39 +1,25 @@
-# #!/bin/bash
-
-# # Check if the URL argument is provided
-# if [ "$#" -ne 1 ]; then
-#     echo "Usage: $0 <URL>"
-#     exit 1
-# fi
-# # URL argument passed to the script
-# url="$1"
-# # Start Chrome in headless mode
-# "C:\Program Files\Google\Chrome\Application\chrome.exe" --profile-directory="Default" --headless --disable-gpu --remote-debugging-port=9222 --disable-gpu http://127.0.0.1:9222/json/version &
-
-# # google-chrome --user-data-dir="Default" --headless --disable-gpu --remote-debugging-port=9222 --disable-gpu http://127.0.0.1:9222/json/version &
-
-# # Wait for Chrome to start
-# sleep 2
-
-# # Use curl to fetch data from the specified URL
-# data=$(curl -s http://127.0.0.1:9222/json/version)
-
-# name=$(echo "$url" | awk -F'/' '{print $NF}')
-# python3 get_links.py "$name" "$data"
-
-#!/bin/bash
-
-# Check if the URL argument is provided
 if [ "$#" -ne 1 ]; then
     echo "Usage: $0 <URL>"
     exit 1
 fi
-
 # URL argument passed to the script
 url="$1"
+ptc=5
+phc=5
+vnc=5
+if [ $# -gt 1 ]; then
+    ptc="$2"
+fi
+if [ $# -gt 2 ]; then
+    phc="$3"
+fi
+if [ $# -gt 3 ]; then
+    vnc="$4"
+fi
+
 
 # Start Chrome in headless mode (assuming Chrome is installed)
-google-chrome --user-data-dir="Default" --headless --disable-gpu --remote-debugging-port=9222 --disable-gpu http://127.0.0.1:9222/json/version &
+google-chrome --profile-directory="Default" --headless --disable-gpu --remote-debugging-port=9222 --disable-gpu http://127.0.0.1:9222/json/version &
 
 # Wait for Chrome to start
 sleep 2
@@ -42,6 +28,6 @@ sleep 2
 data=$(curl -s http://127.0.0.1:9222/json/version)
 
 name=$(echo "$url" | awk -F'/' '{print $NF}')
-python3 get_links.py "$name" "$data"
+python get_links.py "$name" "$data" $ptc
 pkill chrome
-python3 scrapper.py "$url"
+python scrapper.py "$url" --phc "$phc" --vnc "$vnc"

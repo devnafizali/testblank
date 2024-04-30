@@ -5,7 +5,6 @@ from functions import get_categories
 async def getPageInfos(page, fbPageUrl):
     PG = {'Page': {}}
         # Get the page ID
-    print("Getting Page ID & creation date...", end='', flush=True)
     try:
         texts = await page.evaluate(
             """() => {
@@ -50,15 +49,12 @@ async def getPageInfos(page, fbPageUrl):
               return pid
           }"""
       )
-      print(extract_date_from_text(texts))
       PG["Page"]["creation_date"] = extract_date_from_text(texts)
-      print("Done")
     except:
         PG["Page"]["creation_date"] = ""
     
     
     # Navigate to page home
-    print("Getting Page Infos...", end='', flush=True)
     await page.goto(fbPageUrl)
 
     # Remove pop up
@@ -66,7 +62,7 @@ async def getPageInfos(page, fbPageUrl):
       await page.waitForSelector(".x92rtbv.x10l6tqk.x1tk7jg1.x1vjfegm")
       await page.click(".x92rtbv.x10l6tqk.x1tk7jg1.x1vjfegm")
     except:
-      print("")
+      pass
     # Remove login suggest
     # await page.waitForSelector(
     #     ".x78zum5.xdt5ytf.x2lah0s.x193iq5w.x2bj2ny.x1ey2m1c.xayqjjm.x9f619.xds687c.x1xy6bms.xn6708d.x1s14bel.x1ye3gou.xixxii4.x17qophe.x1u8a7rm"
@@ -227,5 +223,4 @@ async def getPageInfos(page, fbPageUrl):
       PG['Page']['total_likes'] = 0
       PG['Page']['total_followers'] = 0
     
-    print("Done")
     return PG['Page']

@@ -16,8 +16,7 @@ if len(args) < 3:
 # Get the parameter passed as an argument
 param = args[1]
 ws = json.loads(args[2])["webSocketDebuggerUrl"]
-print(ws)
-pRange = 10
+pRange = int(args[3])
 async def main():
     # Launch browser
     print("Getting Page Posts list...")
@@ -57,7 +56,6 @@ async def main():
     while True:
         target_elements = await page.querySelectorAll('[style="width:29px;"]')
         currentLength = len(target_elements)
-        print(currentLength)
         if len(target_elements) < pRange:
             # await page.evaluate('window.scrollTo(0, 0-document.body.scrollHeight);')
             if currentLength > prevLength:
@@ -80,12 +78,12 @@ async def main():
             await page.waitForSelector('[data-comp-id="22222"]', timout=3000)
             await page.evaluate('()=>{const element = document.querySelector(`[data-comp-id="22222"]`); element.remove()}')
         except Exception as e:
-            print(e)
+            pass
         try:
             await page.waitForSelector('[data-action-id="32761"]', timeout=3000)
             await page.evaluate('() => {document.querySelector(`[data-action-id="32761"]`).click();}')
         except Exception as e:
-            print(e)
+            pass
 
         element = await page.querySelector('[class="rtl-ignore f2 a"]')
         # Perform the double click on the element
@@ -93,9 +91,8 @@ async def main():
             await page.waitForSelector('[class="rtl-ignore f2 a"]', timout=3000)
             element = await page.querySelector('[class="rtl-ignore f2 a"]')
             await element.click(clickCount=2)
-            print("Double click successful!")
         except Exception as e:
-            print("Double click failed:", e)
+            pass
         try:
             await page.waitForSelector('[aria-label="Follow"]', timout=3000)
         except:
@@ -134,7 +131,6 @@ async def main():
         file.write('\n'.join(post_urls))
 
     print('postUrls written to postUrls.txt file.')
-    # await asyncio.sleep(600)
     # await browser.close()
 
 asyncio.get_event_loop().run_until_complete(main())

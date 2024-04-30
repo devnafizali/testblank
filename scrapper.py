@@ -63,7 +63,6 @@ async def setup_browser():
   
 async def main():
     start_time = time.time()
-    print("Getting page posts list ...")
     # post_urls = await fetch_post_urls(fbPageId)
     # print(post_urls)
     post_urls = []
@@ -71,17 +70,15 @@ async def main():
         post_urls = file.read().splitlines()
     # Set up browser
     browser = await setup_browser()
-
     # Create a new page
     page = await browser.newPage()
-
     # Placeholder for PG
     PG = {'Page': {}}
         # Command Epoch Timespan
     PG["Page"]["scrape_epoch_timestamp"] = int(time.time())
     # Facebook page URL
     # Navigate to the specified URL
-    print("Getting page infos...", fbPageUrl)
+    print("Getting page Meta Data...", fbPageUrl)
     await page.goto(fbPageUrl + "/about_profile_transparency")
 
     # Remove the first Facebook popup
@@ -94,7 +91,7 @@ async def main():
     )
     except:
       pass
-    print("Getting Page details", end='', flush=True)
+    print("Getting Page post details", end='', flush=True)
     posts = await getPagePosts(page,fbPageId, post_urls)
     inf = await getPageInfos(page, fbPageUrl)
     PG['Page'].update(inf)
@@ -105,7 +102,9 @@ async def main():
     # Save the information in a JSON file
     page_name = re.sub(r'[^\x00-\x7F]+', '',  PG["Page"]["name"].replace(":", ""))
     file_name = f"{page_name}/{page_name}.json"
+    
     cleaned_file_name = re.sub(r'[^\x00-\x7F]+', '', file_name)
+    
     with open(cleaned_file_name, 'w', encoding='utf-8') as json_file:
         json.dump(PG, json_file, indent=2, ensure_ascii=False)
     await page.close()

@@ -43,8 +43,7 @@ async def getPagePV(page, photo_number, video_number, name, waiting_time_for_pho
             await page.keyboard.press("ArrowRight")
     except:
       photo_urls = []
-    print("Done")
-    print("Getting Page Videos...", end='', flush=True)
+    print("Getting Page Videos...")
     # Get the videos
     try:
         await page.goto(fbPageUrl + "/videos")
@@ -81,12 +80,11 @@ async def getPagePV(page, photo_number, video_number, name, waiting_time_for_pho
       PG["Page"]['videos'] = []
     # Check if directory exists, if not create it
     page_name = re.sub(r'[^\x00-\x7F]+', '', name)
-    print("Saving The json...", end='', flush=True)
+    print("Saving The json...")
     
     if page_name and not os.path.exists(page_name):
         os.mkdir(page_name)
-    print("Done")
-    print("Downloading the images...", end='', flush=True)
+    print("Downloading the images...")
     PG["Page"]["photos"] = []
     # Download and save images
     for i, element in enumerate(photo_urls):
@@ -94,5 +92,4 @@ async def getPagePV(page, photo_number, video_number, name, waiting_time_for_pho
         name_of_photo = f"{page_name}/{name}"
         await download_image(page, element, name_of_photo)
         PG["Page"]["photos"].append(name) 
-    print("Done")
     return PG
