@@ -1,7 +1,4 @@
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <URL>"
-    exit 1
-fi
+
 # URL argument passed to the script
 url="$1"
 ptc=5
