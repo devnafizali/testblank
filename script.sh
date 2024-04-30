@@ -25,6 +25,6 @@ sleep 2
 data=$(curl -s http://127.0.0.1:9222/json/version)
 
 name=$(echo "$url" | awk -F'/' '{print $NF}')
-python get_links.py "$name" "$data" $ptc
+python3 get_links.py "$name" "$data" $ptc
 pkill chrome
-python scrapper.py "$url" --phc "$phc" --vnc "$vnc"
+python3 scrapper.py "$url" --phc "$phc" --vnc "$vnc"
