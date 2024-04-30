@@ -134,7 +134,7 @@ async def main():
         file.write('\n'.join(post_urls))
 
     print('postUrls written to postUrls.txt file.')
-    await asyncio.sleep(600)
+    # await asyncio.sleep(600)
     # await browser.close()
 
 asyncio.get_event_loop().run_until_complete(main())
