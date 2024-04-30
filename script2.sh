@@ -19,6 +19,7 @@
 
 # Open Google Chrome
 google-chrome --user-data-dir="Default" --headless --disable-gpu --remote-debugging-port=9222 --disable-gpu http://127.0.0.1:9222/json/version &
+echo "$output" > output.txt
 sleep 10
 
 # # Use cURL to invoke the REST API endpoint and retrieve the JSON data
