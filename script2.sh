@@ -21,11 +21,11 @@
 google-chrome --user-data-dir="Default" --headless --disable-gpu --remote-debugging-port=9222 --disable-gpu http://127.0.0.1:9222/json/version &
 sleep 10
 
-# Use cURL to invoke the REST API endpoint and retrieve the JSON data
-data=$(curl -s http://127.0.0.1:9222/json/version)
+# # Use cURL to invoke the REST API endpoint and retrieve the JSON data
+# data=$(curl -s http://127.0.0.1:9222/json/version)
 
 # Print the JSON data
-echo "$data"
+# echo "$data"
 
 # Close Chrome using pkill
 pkill chrome
