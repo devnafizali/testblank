@@ -18,16 +18,18 @@
 #!/bin/bash
 
 # Open Google Chrome
+# "C:\Program Files\Google\Chrome\Application\chrome.exe" --profile-directory="Default" --headless --disable-gpu --remote-debugging-port=9222 --disable-gpu http://127.0.0.1:9222/json/version &
+
 google-chrome --user-data-dir="Default" --headless --disable-gpu --remote-debugging-port=9222 --disable-gpu http://127.0.0.1:9222/json/version &
-echo "$output" > output.txt
-sleep 10
 
-# # Use cURL to invoke the REST API endpoint and retrieve the JSON data
-# data=$(curl -s http://127.0.0.1:9222/json/version)
+data=$(curl -s http://127.0.0.1:9222/json/version)
 
-# Print the JSON data
-# echo "$data"
+# Print the fetched data
+echo "$data"
+
 
 # Close Chrome using pkill
 pkill chrome
+# powershell.exe -Command "Stop-Process -Name chrome -Force"
+
 
