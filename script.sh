@@ -43,5 +43,5 @@ data=$(curl -s http://127.0.0.1:9222/json/version)
 
 name=$(echo "$url" | awk -F'/' '{print $NF}')
 python3 get_links.py "$name" "$data"
-python3 scrapper.py "$url"
 pkill chrome
+python3 scrapper.py "$url"
